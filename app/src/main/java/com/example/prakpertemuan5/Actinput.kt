@@ -141,3 +141,186 @@ fun BiodataScreen() {
             }
 
             Spacer(Modifier.height(12.dp))
+
+            // Email
+            OutlinedTextField(
+                value = email,
+                onValueChange = { email = it },
+                label = { Text("Email") },
+                singleLine = true,
+                shape = fieldShape,
+                keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(
+                    keyboardType = KeyboardType.Email
+                ),
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(Modifier.height(12.dp))
+
+            // Tgl lahir & Experience
+            Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                Box(modifier = Modifier.weight(1f)) {
+                    OutlinedTextField(
+                        value = birth,
+                        onValueChange = {},
+                        readOnly = true,
+                        label = { Text("Tgl Lahir") },
+                        trailingIcon = {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_calendar),
+                                contentDescription = "Pilih tanggal"
+                            )
+                        },
+                        singleLine = true,
+                        shape = fieldShape,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    // Lapisan transparan agar seluruh field bisa diklik
+                    Box(
+                        modifier = Modifier
+                            .matchParentSize()
+                            .clickable { showDatePicker = true }
+                    )
+                }
+
+                ExposedDropdownMenuBox(
+                    expanded = expandedExp,
+                    onExpandedChange = { expandedExp = it },
+                    modifier = Modifier.weight(1f)
+                ) {
+                    OutlinedTextField(
+                        value = experience,
+                        onValueChange = {},
+                        readOnly = true,
+                        label = { Text("Experience") },
+                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expandedExp) },
+                        singleLine = true,
+                        shape = fieldShape,
+                        modifier = Modifier
+                            .menuAnchor()
+                            .fillMaxWidth()
+                    )
+                    ExposedDropdownMenu(
+                        expanded = expandedExp,
+                        onDismissRequest = { expandedExp = false }
+                    ) {
+                        experienceList.forEach { item ->
+                            DropdownMenuItem(
+                                text = { Text(item) },
+                                onClick = {
+                                    experience = item
+                                    expandedExp = false
+                                }
+                            )
+                        }
+                    }
+                }
+            }
+
+            Spacer(Modifier.height(20.dp))
+
+            // Skill
+            Text(
+                text = "Pilih Skill Anda :",
+                fontSize = 13.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color(0xFF212121)
+            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                SkillCheck("Android", skillAndroid, { skillAndroid = it }, Modifier.weight(1f))
+                SkillCheck("UI/UX", skillUiux, { skillUiux = it }, Modifier.weight(1f))
+                SkillCheck("Web", skillWeb, { skillWeb = it }, Modifier.weight(1f))
+            }
+
+            Spacer(Modifier.height(24.dp))
+
+            // Tombol Proceed
+            Button(
+                onClick = { showResult = true },
+                enabled = isValid,
+                shape = fieldShape,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = PurpleTitle,
+                    contentColor = Color.White,
+                    disabledContainerColor = Color(0xFFE0E0E0),
+                    disabledContentColor = Color.White
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp)
+            ) {
+                Text("Proceed", fontWeight = FontWeight.Bold)
+            }
+
+            Spacer(Modifier.height(24.dp))
+        }
+    }
+
+    // Date picker
+    if (showDatePicker) {
+        val dateState = rememberDatePickerState()
+        DatePickerDialog(
+            onDismissRequest = { showDatePicker = false },
+            confirmButton = {
+                TextButton(onClick = {
+                    dateState.selectedDateMillis?.let { millis ->
+                        val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                        sdf.timeZone = TimeZone.getTimeZone("UTC")
+                        birth = sdf.format(Date(millis))
+                    }
+                    showDatePicker = false
+                }) { Text("OK") }
+            },
+            dismissButton = {
+                TextButton(onClick = { showDatePicker = false }) { Text("Batal") }
+            }
+        ) {
+            DatePicker(state = dateState)
+        }
+    }
+
+    // Dialog hasil
+    if (showResult) {
+        val skills = listOfNotNull(
+            "Android".takeIf { skillAndroid },
+            "UI/UX".takeIf { skillUiux },
+            "Web".takeIf { skillWeb }
+        ).joinToString(", ")
+
+        AlertDialog(
+            onDismissRequest = { showResult = false },
+            title = { Text("Data Biodata") },
+            text = {
+                Text(
+                    "Nama      : $firstName $lastName\n" +
+                            "Email     : $email\n" +
+                            "Tgl Lahir : $birth\n" +
+                            "Experience: $experience\n" +
+                            "Skill     : $skills"
+                )
+            },
+            confirmButton = {
+                TextButton(onClick = { showResult = false }) { Text("OK") }
+            }
+        )
+    }
+}
+
+@Composable
+private fun SkillCheck(
+    label: String,
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Checkbox(checked = checked, onCheckedChange = onCheckedChange)
+        Text(label, fontSize = 11.sp)
+    }
+}
