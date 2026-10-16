@@ -308,3 +308,19 @@ fun BiodataScreen() {
         )
     }
 }
+
+@Composable
+private fun SkillCheck(
+    label: String,
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Checkbox(checked = checked, onCheckedChange = onCheckedChange)
+        Text(label, fontSize = 11.sp)
+    }
+}
