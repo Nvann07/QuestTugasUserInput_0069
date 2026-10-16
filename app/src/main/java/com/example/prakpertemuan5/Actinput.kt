@@ -61,4 +61,14 @@ fun BiodataScreen() {
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFFF5F5F5))
-    )
+    ) {
+        // Gambar latar (pdi.jpg dari drawable)
+        Image(
+            painter = painterResource(id = R.drawable.pdi),
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(300.dp)
+        )
+
