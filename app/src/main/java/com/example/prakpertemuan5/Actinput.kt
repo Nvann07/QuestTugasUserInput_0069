@@ -43,3 +43,6 @@ fun BiodataScreen() {
     var skillWeb by rememberSaveable { mutableStateOf(false) }
 
     var showDatePicker by remember { mutableStateOf(false) }
+    var expandedExp by remember { mutableStateOf(false) }
+    var showResult by remember { mutableStateOf(false) }
+
