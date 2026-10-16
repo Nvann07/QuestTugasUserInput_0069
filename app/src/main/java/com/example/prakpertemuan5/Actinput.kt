@@ -29,7 +29,3 @@ import java.util.Locale
 import java.util.TimeZone
 
 val PurpleTitle = Color(0xFF673AB7)
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun BiodataScreen() {}
