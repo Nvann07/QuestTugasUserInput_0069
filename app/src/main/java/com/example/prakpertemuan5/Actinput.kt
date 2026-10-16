@@ -91,3 +91,53 @@ fun BiodataScreen() {
             }
         }
 
+        // Kartu form
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = 200.dp)
+                .shadow(8.dp, cardShape)
+                .background(Color.White, cardShape)
+                .verticalScroll(rememberScrollState())
+                .padding(24.dp)
+        ) {
+            Text(
+                text = "Form Biodata",
+                color = PurpleTitle,
+                fontSize = 26.sp,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
+            )
+            Spacer(Modifier.height(8.dp))
+            Text(
+                text = "Silahkan isi biodata Anda dibawah ini !!!",
+                color = Color(0xFF757575),
+                fontSize = 11.sp,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(Modifier.height(28.dp))
+
+            // Nama depan & belakang
+            Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                OutlinedTextField(
+                    value = firstName,
+                    onValueChange = { firstName = it },
+                    label = { Text("Nama Depan") },
+                    singleLine = true,
+                    shape = fieldShape,
+                    modifier = Modifier.weight(1f)
+                )
+                OutlinedTextField(
+                    value = lastName,
+                    onValueChange = { lastName = it },
+                    label = { Text("Nama Belakang") },
+                    singleLine = true,
+                    shape = fieldShape,
+                    modifier = Modifier.weight(1f)
+                )
+            }
+
+            Spacer(Modifier.height(12.dp))
