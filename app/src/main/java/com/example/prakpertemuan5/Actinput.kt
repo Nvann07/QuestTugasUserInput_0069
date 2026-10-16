@@ -72,3 +72,22 @@ fun BiodataScreen() {
                 .height(300.dp)
         )
 
+        // Titik indikator kecil di kiri atas
+        Row(
+            modifier = Modifier
+                .statusBarsPadding()
+                .padding(start = 16.dp, top = 12.dp)
+        ) {
+            repeat(4) { i ->
+                Box(
+                    modifier = Modifier
+                        .padding(end = 6.dp)
+                        .size(6.dp)
+                        .background(
+                            if (i == 0) Color(0xFF2196F3) else Color(0x99FFFFFF),
+                            CircleShape
+                        )
+                )
+            }
+        }
+
