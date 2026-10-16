@@ -35,3 +35,4 @@ val PurpleTitle = Color(0xFF673AB7)
 fun BiodataScreen() {
     var firstName by rememberSaveable { mutableStateOf("") }
     var lastName by rememberSaveable { mutableStateOf("") }
+    var email by rememberSaveable { mutableStateOf("") }
